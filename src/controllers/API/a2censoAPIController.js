@@ -1,38 +1,33 @@
 const db = require("../../database/models");
-// const sequelize = db.sequelize;
-// const { Op } = require("sequelize");
+const campaignModel = require("../../models/campaignModel");
 
 const a2censoAPIController = {
-  list: (req, res) => {
-    db.campaign
-      .findAll()
-      .then((item) => {
-        let result = item.map((value) => {
-          let result = {
-            idcampaign: value.idcampaign,
-            name: value.name,
-            amount: value.amount,
-            requestedAmount: value.requestedAmount,
-            " adminRate": value.adminRate,
-            detail: "/api/v1/campaign/" + value.idcampaign,
-          };
-          return result;
-        });
-        let respuesta = {
-          meta: {
-            status: 200,
-            total: item.length,
-            url: "api/v1/campaing",
-          },
-          data: result,
+  list: async (req, res) => {
+    try {
+      let campaign = await campaignModel.find();
+      let result = campaign.map((value) => {
+        let result = {
+          idcampaign: value.idcampaign,
+          name: value.name,
+          amount: value.amount,
+          requestedAmount: value.requestedAmount,
+          adminRate: value.adminRate,
+          detail: "/api/v1/campaign/" + value.idcampaign,
         };
-        res.status(200).json(respuesta);
-      })
-      .catch((err) => {
-        res.status(404).json({
-          message: err,
-        });
+        return result;
       });
+      let respuesta = {
+        meta: {
+          status: 200,
+          total: result.length,
+          url: "api/v1/campaing",
+        },
+        data: result,
+      };
+      res.status(200).json(respuesta);
+    } catch (error) {
+      console.log(error);
+    }
   },
   create: async (req, res) => {
     try {
@@ -51,14 +46,15 @@ const a2censoAPIController = {
       } else {
         if (values.includes(adminRate)) {
           try {
-            const create = await db.campaign.create({
-              name: name,
-              amount,
-              requestedAmount,
-            });
+            const create = await campaignModel.create(body);
+            // const create = await db.campaign.create({
+            //   name: name,
+            //   amount,
+            //   requestedAmount,
+            // });
             res.status(201).json({
-                message: "create",
-                data:create,
+              message: "create",
+              data: create,
             });
           } catch (error) {
             res.status(404).json({
@@ -67,12 +63,8 @@ const a2censoAPIController = {
           }
         } else {
           try {
-            const create = await db.campaign.create({
-              name: name,
-              amount,
-              requestedAmount,
-              adminRate,
-            });
+            const create = await campaignModel.create(body);
+
             res.status(201).json({
               create,
             });
@@ -94,25 +86,22 @@ const a2censoAPIController = {
     try {
       const { id } = req.params;
       const body = req.body;
-      const update = await db.campaign.update(
-        {
-          ...body,
-        },
-        {
-          where: {
-            idcampaign: id,
-          },
+      const update = await campaignModel.update(body, id);
+      if (update[0] == 1) {
+        let detail = await db.campaign.findByPk(id);
+        if (detail == null || detail == undefined) {
+          res.status(404).json({
+            message: "campaign Not Fount",
+          });
+        } else {
+          res.status(200).json({
+            message: "Update",
+            data: detail,
+          });
         }
-      );
-      let detail = await db.campaign.findByPk(id);
-      if (detail == null || detail == undefined) {
-        res.status(404).json({
-          message: "campaign Not Fount",
-        });
       } else {
-        res.status(200).json({
-            message: 'Update',
-            data: detail
+        res.status(404).json({
+          message: "no changes recorded",
         });
       }
     } catch (error) {
@@ -122,20 +111,22 @@ const a2censoAPIController = {
     }
   },
   delete: async (req, res) => {
-      try {
-        const { id } = req.params;
-        await db.campaign.destroy({
-            where: { 
-                idcampaign: id,
-            }
-        });
+    try {
+      const { id } = req.params;
+      const deletee = await campaignModel.delete(id);
+      if (deletee == 1) {
         res.status(200).json({
-            message: "Delete",
-            idcampaign: id,
+          message: "Delete",
+          idcampaign: id,
         });
-      } catch (error) {
-          console.log(error)
+      } else {
+        res.status(404).json({
+          message: "Error id not found",
+        });
       }
+    } catch (error) {
+      console.log(error);
+    }
   },
   amountAsc: (req, res) => {
     db.campaign
