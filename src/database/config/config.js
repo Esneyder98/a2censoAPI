@@ -4,6 +4,7 @@ let USER = env.USER
 let DATABASE_PASSWORD = env.DATABASE_PASSWORD
 let DATABASE_NAME = env.DATABASE_NAME
 let DATABASE_HOST = env.DATABASE_HOST
+let DATABASE_DIALECT = env.DATABASE_DIALECT
 let DATABASE_PORT = env.DATABASE_PORT
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
 		password: env.DATABASE_PASSWORD,
 		database: env.DATABASE_NAME,
 		host: env.DATABASE_HOST,
-		dialect: 'mysql',
+		dialect: env.DATABASE_DIALECT,
 		port: env.DATABASE_PORT,
 	},
 	test: {
@@ -20,7 +21,7 @@ module.exports = {
 		password: env.DATABASE_PASSWORD,
 		database: env.DATABASE_NAME,
 		host: env.DATABASE_HOST,
-		dialect: 'mysql',
+		dialect: env.DATABASE_DIALECT,
 		port: env.DATABASE_PORT,
 	},
 	production: {
@@ -28,7 +29,7 @@ module.exports = {
 		password: env.DATABASE_PASSWORD,
 		database: env.DATABASE_NAME,
 		host: env.DATABASE_HOST,
-		dialect: 'mysql',
+		dialect: env.DATABASE_DIALECT,
 		port: env.DATABASE_PORT,
 	},
 	}
