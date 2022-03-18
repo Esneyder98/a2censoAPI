@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `a2censo` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `a2censo`;
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: localhost    Database: a2censo
@@ -29,7 +31,7 @@ CREATE TABLE `campaign` (
   `requestedAmount` decimal(12,2) NOT NULL,
   `adminRate` decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (`idcampaign`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +40,7 @@ CREATE TABLE `campaign` (
 
 LOCK TABLES `campaign` WRITE;
 /*!40000 ALTER TABLE `campaign` DISABLE KEYS */;
-INSERT INTO `campaign` VALUES (1,'RobinFood 2.0',2000000.00,2500000.00,NULL),(2,'T4\nTea For U',1000000.00,1200000.00,NULL),(3,'Smoking Burgers',2000000.00,2000000.00,NULL),(4,'Update Prueba',2600000.00,3200000.00,NULL),(5,'Prueba create',1000000.00,1500000.00,NULL);
+INSERT INTO `campaign` VALUES (1,'RobinFood 2.0',2000000.00,2500000.00,NULL),(2,'T4\nTea For U',1000000.00,1200000.00,NULL),(3,'Smoking Burgers',2000000.00,2000000.00,NULL);
 /*!40000 ALTER TABLE `campaign` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-17 14:34:36
+-- Dump completed on 2022-03-17 21:18:00
